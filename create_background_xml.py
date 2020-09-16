@@ -1,5 +1,9 @@
 import os
 import argparse
+from shutil import copyfile
+
+xml_destination = '/home/mick/.local/share/shotwell/wallpaper/wallpaper.xml'
+xml_temp = '/home/mick/wallpaper.xml'
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--slides", help="full path to the slides directory")
@@ -10,7 +14,7 @@ for pic in os.listdir(args.slides):
     if pic.endswith(".jpg"):
         file_list.append(pic)
 
-with open('/home/mick/wallpaper.xml', 'w') as xml:
+with open(xml_temp, 'w') as xml:
     xml.write('<background>\n\t<static>\n\t\t<duration>60.00</duration>\n')
     full_path = os.path.join(args.slides, file_list[0])
     xml.write('\t\t<file>%s</file>\n\t</static>\n' % full_path)
@@ -32,3 +36,5 @@ with open('/home/mick/wallpaper.xml', 'w') as xml:
         xml.write('\t</static>\n')
 
     xml.write('</background>\n')
+
+copyfile(xml_temp, xml_destination)
